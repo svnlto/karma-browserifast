@@ -145,9 +145,13 @@ function karmaBrowserifast() {
             }
             bundle = browserify(options);
 
-            for (var exposeName in bc.require) {
-              var requirePath = path.resolve(config.basePath, bc.require[exposeName]);
-              bundle.require(requirePath, {expose: exposeName});
+            if (!Array.isArray(bc.require)) {
+              for (var exposeName in bc.require) {
+                var requirePath = path.resolve(config.basePath, bc.require[exposeName]);
+                bundle.require(requirePath, {expose: exposeName});
+              }
+            } else {
+              bundle.require(bc.require);
             }
 
             bc.transform.forEach(function(t) {
